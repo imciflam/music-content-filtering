@@ -39,20 +39,35 @@ def build_rand_feat():#preprocess to push
 def get_conv_model(): #convo layer - > pooling(once because 13x9) -> dence layers
     model = Sequential()
     model.add(Conv2D(16, (3,3), activation = 'relu', strides = (1,1),padding='same', input_shape = input_shape)) 
-    mode.add(Conv2D(32, (3,3), activation = 'relu', strides = (1,1), padding = 'same')) #more filters, 3 3
-    mode.add(Conv2D(64, (3,3), activation = 'relu', strides = (1,1), padding = 'same')) #more filters, 3 3
-    mode.add(Conv2D(128, (3,3), activation = 'relu', strides = (1,1), padding = 'same')) #more filters, 3 3
+    model.add(Conv2D(32, (3,3), activation = 'relu', strides = (1,1), padding = 'same')) #more filters, 3 3
+    model.add(Conv2D(64, (3,3), activation = 'relu', strides = (1,1), padding = 'same')) #more filters, 3 3
+    #model.add(Conv2D(128, (3,3), activation = 'relu', strides = (1,1), padding = 'same')) #more filters, 3 3
+    #model.add(Conv2D(256, (3,3), activation = 'relu', strides = (1,1), padding = 'same')) #more filters, 3 3
     model.add(MaxPool2D((2,2)))
     model.add(Dropout(0.5))#before flattening
     model.add(Flatten())
-    model.add(Dense(128, activation = 'relu'))
-    model.add(Dense(64, activation = 'relu'))
+    model.add(Dense(256, activation = 'relu'))
+    #model.add(Dense(64, activation = 'relu'))
     model.add(Dense(10, activation = 'softmax')) #10 class activations, softmax - because categorical cross enthropy
     model.summary()
-    model.compile(loss='categorical_crossenthropy', optimizer = 'adam', metrics = ['acc'])
+    model.compile(loss='categorical_crossentropy', optimizer = 'adam', metrics = ['acc'])
     return model
 
-
+def get_recurrent_model():
+    #shape of data for RNN is (n, time, feat) = n x 9 x 13
+    model = Sequential()
+    model.add(LSTM(128, return_sequences = True, input_shape=input_shape)) #like a dense layer - long short memory model. 128 neurons shape of data n x 9 x 13
+    model.add(LSTM(128, return_sequences = True))
+    model.add(Dropout(0.5))
+    model.add(TimeDistributed(Dense(64, activation='relu'))) #64 neurons
+    model.add(TimeDistributed(Dense(32, activation='relu')))
+    model.add(TimeDistributed(Dense(16, activation='relu')))
+    model.add(TimeDistributed(Dense(8, activation='relu')))#time distrib => multiples by time => gotta bring it down
+    model.add(Flatten())
+    model.add(Dense(10, activation = 'softmax'))
+    model.summary()
+    model.compile(loss='categorical_crossentropy', optimizer = 'adam', metrics = ['acc'])
+    return model
         
 class Config:
     def __init__(self, mode='conv', nfilt=26, nfeat = 13, nfft = 512, rate = 16000): #filtered out
@@ -63,7 +78,7 @@ class Config:
         self.nfft = nfft
         self.step = int(rate/10) #0.1 sec, how much data computing while creating window
 
-df = pd.read_csv('instruments.csv')
+df = pd.read_csv('instruments2.csv')
 df.set_index('fname', inplace=True)
 
 for f in df.index:
@@ -87,7 +102,7 @@ ax.axis('equal')
 #plt.show()
 
 
-config = Config(mode='conv')
+config = Config(mode='time')
 
 if config.mode == 'conv':
     X, y = build_rand_feat()#features from random chunk
