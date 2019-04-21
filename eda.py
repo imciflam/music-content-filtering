@@ -80,11 +80,11 @@ def calc_fft(y,rate): #magnitute + freq (fft is complex)
     Y = abs(np.fft.rfft(y)/n)#fft is complex, division to balance
     return(Y, freq)
 
-df = pd.read_csv("instruments3.csv") #import excel
+df = pd.read_csv("instruments201.csv") #import excel
 df.set_index('fname', inplace = True)
 
 for f in df.index:
-    rate, signal = wavfile.read('wavfiles/'+f)
+    rate, signal = wavfile.read('clean1/'+f)
     df.at[f, 'length'] = signal.shape[0]/rate
 
 classes = list(np.unique(df.label))
@@ -104,7 +104,7 @@ mfccs = {}
 
 for c in classes:
     wav_file = df[df.label ==c].iloc[0,0] #condition -0 ind, 0 col
-    signal, rate = librosa.load('wavfiles/'+wav_file, sr = 44100) #sampling rate
+    signal, rate = librosa.load('clean1/'+wav_file, sr = 44100) #sampling rate
     mask = envelope(signal, rate, 0.0005) #can toggle 0.0005
     signal = signal[mask] #remove noise
     signals[c]=signal
@@ -127,8 +127,8 @@ for c in classes:
 #plot_mfccs(mfccs) 
 #plt.show()
 
-if len(os.listdir('clean'))==0:
+if len(os.listdir('cleaner'))==0:
     for f in tqdm(df.fname):
-        signal, rate = librosa.load('wavfiles/' + f, sr = 16000) #screw highfreq
+        signal, rate = librosa.load('clean1/' + f, sr = 16000) #screw highfreq
         mask = envelope(signal, rate, 0.0005) #clean up the junk 
-        wavfile.write(filename='clean/'+f, rate = rate, data= signal[mask])
+        wavfile.write(filename='cleaner/'+f, rate = rate, data= signal[mask])
