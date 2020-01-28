@@ -56,7 +56,23 @@ def build_predictions(audio_dir):
 
 
 # can remove if no classification, if we don't know true classes
-df = pd.read_csv('new_try.csv')
+dictionary = {'fname': ['algo.wav',
+                        'badguys.wav',
+                        'believer.wav',
+                        'chopinmajs.wav',
+                        'chopins.wav',
+                        'disturbed.wav',
+                        'dove.wav',
+                        'experiences.wav',
+                        'gomez.wav',
+                        'helas.wav',
+                        'iawfyls.wav',
+                        'kazak.wav',
+                        'luna.wav', 
+                        ]}
+
+df = pd.DataFrame(data=dictionary)
+#df = pd.read_csv('new_try.csv')
 classes = ['Electronic', 'Experimental', 'Folk', 'Hip-Hop',
            'Instrumental', 'International', 'Pop', 'Rock']  # all names of genres
 
@@ -71,9 +87,10 @@ model = load_model('models/conv.model')
 y_pred, fn_prob = build_predictions(
     'valrandmusic')  # predictions for all in this dir
 # acc_score = accuracy_score(y_true=y_true, y_pred=y_pred) #0.35687649164677804
-# print(acc_score)
 
 y_probs = []
+# for i in list:
+#    print(i)
 for i, row in df.iterrows():
     y_prob = fn_prob[row.fname]
     y_probs.append(y_prob)
