@@ -24,15 +24,13 @@ class Config:
 
 
 def build_predictions(audio_dir):
-    y_true = []
+    # y_true = []
     y_pred = []
     fn_prob = {}
 
     print('Extracting features from audio')
     for fn in tqdm(os.listdir(audio_dir)):
         rate, wav = wavfile.read(os.path.join(audio_dir, fn))
-        label = fn2class[fn]
-        c = classes.index(label)
         y_prob = []
 
         for i in range(0, wav.shape[0]-config.step, config.step):  # cannot go further
@@ -49,19 +47,20 @@ def build_predictions(audio_dir):
             y_hat = model.predict(x)
             y_prob.append(y_hat)
             y_pred.append(np.argmax(y_hat))
-            y_true.append(c)
+            # y_true.append(c)
 
-        # or that would be crap
+        # if not added that would be crap
         fn_prob[fn] = np.mean(y_prob, axis=0).flatten()
 
-    return y_true, y_pred, fn_prob
+    return y_pred, fn_prob
 
 
 # can remove if no classification, if we don't know true classes
 df = pd.read_csv('new_try.csv')
-classes = list(np.unique(df.label))  # all names of genres
+classes = ['Electronic', 'Experimental', 'Folk', 'Hip-Hop',
+           'Instrumental', 'International', 'Pop', 'Rock']  # all names of genres
 
-fn2class = dict(zip(df.fname, df.label))
+# fn2class = dict(zip(df.fname, df.label))
 p_path = os.path.join('pickles', 'convbig.p')
 
 with open(p_path, 'rb') as handle:
@@ -69,9 +68,10 @@ with open(p_path, 'rb') as handle:
 
 model = load_model('models/conv.model')
 
-y_true, y_pred, fn_prob = build_predictions(
+y_pred, fn_prob = build_predictions(
     'valrandmusic')  # predictions for all in this dir
-acc_score = accuracy_score(y_true=y_true, y_pred=y_pred)
+# acc_score = accuracy_score(y_true=y_true, y_pred=y_pred) #0.35687649164677804
+# print(acc_score)
 
 y_probs = []
 for i, row in df.iterrows():
