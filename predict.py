@@ -56,26 +56,14 @@ def build_predictions(audio_dir):
 
 
 # can remove if no classification, if we don't know true classes
-dictionary = {'fname': ['algo.wav',
-                        'badguys.wav',
-                        'believer.wav',
-                        'chopinmajs.wav',
-                        'chopins.wav',
-                        'disturbed.wav',
-                        'dove.wav',
-                        'experiences.wav',
-                        'gomez.wav',
-                        'helas.wav',
-                        'iawfyls.wav',
-                        'kazak.wav',
-                        'luna.wav', 
-                        ]}
+dictionary = {'fname': [
+    'believer.wav',
+]}
 
 df = pd.DataFrame(data=dictionary)
 #df = pd.read_csv('new_try.csv')
 classes = ['Electronic', 'Experimental', 'Folk', 'Hip-Hop',
            'Instrumental', 'International', 'Pop', 'Rock']  # all names of genres
-
 # fn2class = dict(zip(df.fname, df.label))
 p_path = os.path.join('pickles', 'convbig.p')
 
