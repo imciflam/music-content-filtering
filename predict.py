@@ -8,9 +8,6 @@ from sklearn.metrics import accuracy_score
 from tqdm import tqdm
 from python_speech_features import mfcc
 import pickle
-import sys
-
-sys.path.append('pickles')
 
 
 class Config:
@@ -23,7 +20,7 @@ class Config:
         # 0.1 sec, how much data computing while creating window
         self.step = int(rate/10)
         self.model_path = os.path.join('models', mode + '.model')
-        self.p_path = os.path.join('pickles', mode + '.p')
+        self.p_path = os.path.join('pickles', 'convbig.p')
 
 
 def build_predictions(audio_dir):
