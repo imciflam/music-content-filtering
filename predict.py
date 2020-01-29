@@ -8,6 +8,7 @@ from sklearn.metrics import accuracy_score
 from tqdm import tqdm
 from python_speech_features import mfcc
 import pickle
+from track_preparation import wav_filename
 
 
 class Config:
@@ -55,7 +56,7 @@ def build_predictions(audio_dir):
 
 # can remove if no classification, if we don't know true classes
 dictionary = {'fname': [
-    'believer.wav',
+    wav_filename,
 ]}
 
 df = pd.DataFrame(data=dictionary)
@@ -69,7 +70,7 @@ with open(p_path, 'rb') as handle:
 model = load_model('models/conv.model')
 
 y_pred, fn_prob = build_predictions(
-    'valrandmusic')  # predictions for all in this dir
+    'converted_track')  # predictions for all in this dir
 # acc_score = accuracy_score(y_true=y_true, y_pred=y_pred) #0.35687649164677804
 
 y_probs = []
