@@ -54,33 +54,36 @@ def build_predictions(audio_dir):
     return y_pred, fn_prob
 
 
-# can remove if no classification, if we don't know true classes
-dictionary = {'fname': [
-    wav_filename,
-]}
+def make_classification():
 
-df = pd.DataFrame(data=dictionary)
-classes = ['Electronic', 'Experimental', 'Folk', 'Hip-Hop',
-           'Instrumental', 'International', 'Pop', 'Rock']  # all names of genres
-p_path = os.path.join('pickles', 'convbig.p')
+    # can remove if no classification, if we don't know true classes
+    dictionary = {'fname': [
+        wav_filename,
+    ]}
 
-with open(p_path, 'rb') as handle:
-    config = pickle.load(handle)
+    df = pd.DataFrame(data=dictionary)
+    classes = ['Electronic', 'Experimental', 'Folk', 'Hip-Hop',
+               'Instrumental', 'International', 'Pop', 'Rock']  # all names of genres
+
+    y_pred, fn_prob = build_predictions(
+        'converted_track')  # predictions for all in this dir
+    # acc_score = accuracy_score(y_true=y_true, y_pred=y_pred) #0.35687649164677804
+
+    y_probs = []
+    for i, row in df.iterrows():
+        y_prob = fn_prob[row.fname]
+        y_probs.append(y_prob)
+        for c, p in zip(classes, y_prob):
+            df.at[i, c] = p
+
+    y_pred = [classes[np.argmax(y)] for y in y_probs]
+    df['y_pred'] = y_pred
+
+    df.to_csv('conv_results.csv', index=False)
+
 
 model = load_model('models/conv.model')
-
-y_pred, fn_prob = build_predictions(
-    'converted_track')  # predictions for all in this dir
-# acc_score = accuracy_score(y_true=y_true, y_pred=y_pred) #0.35687649164677804
-
-y_probs = []
-for i, row in df.iterrows():
-    y_prob = fn_prob[row.fname]
-    y_probs.append(y_prob)
-    for c, p in zip(classes, y_prob):
-        df.at[i, c] = p
-
-y_pred = [classes[np.argmax(y)] for y in y_probs]
-df['y_pred'] = y_pred
-
-df.to_csv('conv_results.csv', index=False)
+p_path = os.path.join('pickles', 'convbig.p')
+with open(p_path, 'rb') as handle:
+        config = pickle.load(handle)
+make_classification()
