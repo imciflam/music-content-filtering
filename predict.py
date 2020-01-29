@@ -8,8 +8,8 @@ from sklearn.metrics import accuracy_score
 from tqdm import tqdm
 from python_speech_features import mfcc
 import pickle
-from track_preparation import stable_wav_filename
 import get_preview as gp
+from track_preparation import stable_wav_filename
 
 
 class Config:
@@ -86,7 +86,5 @@ model = load_model('models/conv.model')
 p_path = os.path.join('pickles', 'convbig.p')
 with open(p_path, 'rb') as handle:
     config = pickle.load(handle)
-print("here")
 gp.preview_download()
-print("here")
 make_classification()

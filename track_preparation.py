@@ -9,8 +9,6 @@ import librosa
 from scipy.io import wavfile
 from python_speech_features import mfcc, logfbank
 
-global stable_wav_filename
-
 
 def envelope(y, rate, threshold):  # signal envelope
     mask = []
@@ -39,12 +37,16 @@ def to_wav():
     audio_dir = os.path.join(os.getcwd(), 'current_track')
     extension = ('*.mp3')
     os.chdir(audio_dir)
+    wav_filename = None
     for audio in glob.glob(extension):
         wav_filename = os.path.splitext(os.path.basename(audio))[0] + '.wav'
         AudioSegment.from_file(audio).export(
             standart_dir + "/converted_track/" + wav_filename, format='wav')
     os.chdir(standart_dir)
-    return wav_filename
+    if (wav_filename != None):
+        return wav_filename
+    else:
+        print("wav_filename is null !!!")
 
 
 def get_mfcc(wav_filename):
