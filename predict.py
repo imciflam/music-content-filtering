@@ -8,7 +8,8 @@ from sklearn.metrics import accuracy_score
 from tqdm import tqdm
 from python_speech_features import mfcc
 import pickle
-from track_preparation import wav_filename
+from track_preparation import stable_wav_filename
+import get_preview as gp
 
 
 class Config:
@@ -55,10 +56,9 @@ def build_predictions(audio_dir):
 
 
 def make_classification():
-
     # can remove if no classification, if we don't know true classes
     dictionary = {'fname': [
-        wav_filename,
+        stable_wav_filename,
     ]}
 
     df = pd.DataFrame(data=dictionary)
@@ -85,5 +85,8 @@ def make_classification():
 model = load_model('models/conv.model')
 p_path = os.path.join('pickles', 'convbig.p')
 with open(p_path, 'rb') as handle:
-        config = pickle.load(handle)
+    config = pickle.load(handle)
+print("here")
+gp.preview_download()
+print("here")
 make_classification()

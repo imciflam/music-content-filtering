@@ -8,7 +8,9 @@ import numpy as np
 import librosa
 from scipy.io import wavfile
 from python_speech_features import mfcc, logfbank
- 
+
+global stable_wav_filename
+
 
 def envelope(y, rate, threshold):  # signal envelope
     mask = []
@@ -87,5 +89,5 @@ def get_mfcc(wav_filename):
                       f, rate=rate, data=signal[mask])
 
 
-wav_filename = to_wav()
-clean_wav_filename = get_mfcc(wav_filename)
+stable_wav_filename = to_wav()
+clean_wav_filename = get_mfcc(stable_wav_filename)
