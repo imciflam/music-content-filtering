@@ -7,7 +7,7 @@ import json
 
 def preview_download():
     track_url = 'https://api.spotify.com/v1/tracks/3rCtueI7qBN2kZBZnXuk5K'
-    bearer = 'BQB2NCjpIEH0jkn9hU1JoLoa6BjIvvIW3dBbezPIVsMyphDI2B7GvdvvcRp5S-No5toSbKpBZdomL20bE_NNEfwgC5BEojdXPK6YRnvcJaU8V9NTWEnoClLdDqRxLCAeKaueYt3xGP1rZZnYIQSx8Yrwv78XmDtjfCuJqNs'
+    bearer = 'BQDnjDy9PYzdUmGpjqq4f16e_HKHEAe0F_VdRaNddCsVPy2SDyoAf1tTuTZbRevpfU9uXpizHVFSir9pkPqzpSXOdYQPD6QJBkmKl2i_oRgHGPKCoILsO5FVC77kJRfqqooZhazWnb1FRs781rbI7MRmu8AJMevcIRQE04I'
     headers = {'Authorization': 'Bearer ' + bearer}
     response = requests.get(track_url, headers=headers)
     if response.status_code == 200:

@@ -7,6 +7,7 @@ import numpy as np
 import pickle
 import get_preview as gp
 import track_preparation as tp
+import temp_audio_removal as tar
 from keras.models import load_model
 from sklearn.metrics import accuracy_score
 from tqdm import tqdm
@@ -81,10 +82,8 @@ def make_classification(stable_wav_filename):
     df['y_pred'] = y_pred
     df.to_csv('conv_results.csv', index=False)
     print('Saved df to csv successfully.')
-    files = glob.glob('/converted_track/')
-    for f in files:
-        print(f)
-        os.remove(f)
+    tar.final_audio_cleaning()
+    print('Cleaned up temporary audio files successfully')
 
 
 request_code = gp.preview_download()
