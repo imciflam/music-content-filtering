@@ -86,7 +86,7 @@ def make_classification(stable_wav_filename):
     print('Cleaned up temporary audio files successfully')
 
 
-request_code = gp.preview_download()
+request_code = gp.top_tracks_information()
 if request_code == 1:
     stable_wav_filename = tp.to_wav()
     tp.get_mfcc(stable_wav_filename)
