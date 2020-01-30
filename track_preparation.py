@@ -82,14 +82,10 @@ def get_mfcc(wav_filename):
     # calculated after discete cosine transform
     mel = mfcc(signal[:rate], rate, numcep=13, nfilt=26, nfft=1103).T
     mfccs[wav_file] = mel
-
+    # if more than one imported
     for f in tqdm(df.fname):
         signal, rate = librosa.load(
             standart_dir + "/converted_track/" + f, sr=16000)  # screw highfreq
         mask = envelope(signal, rate, 0.0005)  # clean up the junk
         wavfile.write(filename=standart_dir + "/converted_track/" +
                       f, rate=rate, data=signal[mask])
-
-
-stable_wav_filename = to_wav()
-clean_wav_filename = get_mfcc(stable_wav_filename)

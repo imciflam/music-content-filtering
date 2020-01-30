@@ -9,7 +9,7 @@ from tqdm import tqdm
 from python_speech_features import mfcc
 import pickle
 import get_preview as gp
-from track_preparation import stable_wav_filename
+import track_preparation as tp
 
 
 class Config:
@@ -55,7 +55,7 @@ def build_predictions(audio_dir):
     return y_pred, fn_prob
 
 
-def make_classification():
+def make_classification(stable_wav_filename):
     # can remove if no classification, if we don't know true classes
     dictionary = {'fname': [
         stable_wav_filename,
@@ -82,9 +82,15 @@ def make_classification():
     df.to_csv('conv_results.csv', index=False)
 
 
-model = load_model('models/conv.model')
-p_path = os.path.join('pickles', 'convbig.p')
-with open(p_path, 'rb') as handle:
-    config = pickle.load(handle)
-gp.preview_download()
-make_classification()
+request_code = gp.preview_download()
+if request_code == 1:
+    stable_wav_filename = tp.to_wav()
+    tp.get_mfcc(stable_wav_filename)
+    model = load_model('models/conv.model')
+    p_path = os.path.join('pickles', 'convbig.p')
+    with open(p_path, 'rb') as handle:
+        config = pickle.load(handle)
+    make_classification(stable_wav_filename)
+
+else:
+    print("Request failed, exiting.")
