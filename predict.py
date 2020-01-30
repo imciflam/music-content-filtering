@@ -1,15 +1,16 @@
 import keras.models
 import os
+import glob
 from scipy.io import wavfile
 import pandas as pd
 import numpy as np
+import pickle
+import get_preview as gp
+import track_preparation as tp
 from keras.models import load_model
 from sklearn.metrics import accuracy_score
 from tqdm import tqdm
 from python_speech_features import mfcc
-import pickle
-import get_preview as gp
-import track_preparation as tp
 
 
 class Config:
@@ -78,8 +79,12 @@ def make_classification(stable_wav_filename):
 
     y_pred = [classes[np.argmax(y)] for y in y_probs]
     df['y_pred'] = y_pred
-
     df.to_csv('conv_results.csv', index=False)
+    print('Saved df to csv successfully.')
+    files = glob.glob('/converted_track/')
+    for f in files:
+        print(f)
+        os.remove(f)
 
 
 request_code = gp.preview_download()

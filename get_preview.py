@@ -11,7 +11,8 @@ def preview_download():
     headers = {'Authorization': 'Bearer ' + bearer}
     response = requests.get(track_url, headers=headers)
     if response.status_code == 200:
-        print('Received track metadata successfully, code ' + response.status_code)
+        print('Received track metadata successfully, code ' +
+              str(response.status_code))
         parsed = json.loads(response.text)
         track_name = parsed['name']
         artist_name = parsed['artists'][0]['name']
@@ -23,5 +24,5 @@ def preview_download():
         else:
             print('Link for audio wasn\'t found')
     else:
-        print('Request failed, code '+response.status_code)
+        print('Request failed, code ' + str(response.status_code))
         return 0
