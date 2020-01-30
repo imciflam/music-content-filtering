@@ -38,16 +38,14 @@ def to_wav():
     extension = ('*.mp3')
     os.chdir(audio_dir)
     wav_filename = None
+    wav_filename_list = []  
     for audio in glob.glob(extension):
         wav_filename = os.path.splitext(os.path.basename(audio))[0] + '.wav'
         AudioSegment.from_file(audio).export(
             standart_dir + "/converted_track/" + wav_filename, format='wav')
-    os.chdir(standart_dir)
-    if (wav_filename != None):
-        return wav_filename
-    else:
-        print("wav_filename is null !!!")
-
+        wav_filename_list.append(wav_filename) 
+    os.chdir(standart_dir)  
+    return wav_filename_list
 
 def get_mfcc(wav_filename):
     dictionary = {'fname': [
@@ -87,5 +85,6 @@ def get_mfcc(wav_filename):
         signal, rate = librosa.load(
             standart_dir + "/converted_track/" + f, sr=16000)  # screw highfreq
         mask = envelope(signal, rate, 0.0005)  # clean up the junk
+        print('rewriting')
         wavfile.write(filename=standart_dir + "/converted_track/" +
                       f, rate=rate, data=signal[mask])

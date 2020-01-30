@@ -57,11 +57,12 @@ def build_predictions(audio_dir):
     return y_pred, fn_prob
 
 
-def make_classification(stable_wav_filename):
+def make_classification(stable_wav_filenames):
+    print(stable_wav_filenames)
     # can remove if no classification, if we don't know true classes
-    dictionary = {'fname': [
-        stable_wav_filename,
-    ]}
+    dictionary = {'fname': 
+        stable_wav_filenames
+    }
 
     df = pd.DataFrame(data=dictionary)
     classes = ['Electronic', 'Experimental', 'Folk', 'Hip-Hop',
@@ -81,20 +82,22 @@ def make_classification(stable_wav_filename):
     y_pred = [classes[np.argmax(y)] for y in y_probs]
     df['y_pred'] = y_pred
     df.to_csv('conv_results.csv', index=False)
-    print('Saved df to csv successfully.')
-    tar.final_audio_cleaning()
-    print('Cleaned up temporary audio files successfully')
+    print('Saved df to csv successfully.') 
 
 
 request_code = gp.top_tracks_information()
 if request_code == 1:
-    stable_wav_filename = tp.to_wav()
-    tp.get_mfcc(stable_wav_filename)
     model = load_model('models/conv.model')
     p_path = os.path.join('pickles', 'convbig.p')
     with open(p_path, 'rb') as handle:
         config = pickle.load(handle)
-    make_classification(stable_wav_filename)
+    stable_wav_filenames = tp.to_wav() 
+    for stable_wav_filename in stable_wav_filenames:
+        tp.get_mfcc(stable_wav_filename) 
+    print('---')
+    make_classification(stable_wav_filenames) 
+    tar.final_audio_cleaning()
+    print('Cleaned up temporary audio files successfully')
 
 else:
     print("Request failed, exiting.")
