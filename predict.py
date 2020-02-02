@@ -80,7 +80,7 @@ def make_classification(stable_wav_filenames):
             df.at[i, c] = p
 
     y_pred = [classes[np.argmax(y)] for y in y_probs]
-    df['y_pred'] = y_pred
+    df['y_pred'] = y_pred 
     df.to_csv('conv_results.csv', index=False)
     print('Saved df to csv successfully.') 
 
