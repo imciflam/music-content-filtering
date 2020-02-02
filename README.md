@@ -1,3 +1,10 @@
 # music-genre-classifier
 
-Using CNN, RNN and CRNN to classify music by genre
+Using CNN, RNN and CRNN to classify music by genre & to create recommendations.
+
+### for dev purposes: 
+install dependencies 
+```pip(3) install -r requirements.txt```
+
+then run
+```python predict.py```  
