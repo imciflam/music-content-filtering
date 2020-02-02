@@ -1,4 +1,4 @@
-# music-genre-classifier
+# Content-based filtering for music recommendation system
 
 Using CNN, RNN and CRNN to classify music by genre & to create recommendations.
 
