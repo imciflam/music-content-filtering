@@ -31,7 +31,7 @@ for index in dataset_df.index:
 
 sorted_distance_dictionary = sorted(
     distance_for_tracks.items(), key=lambda x: x[1])
-top_five_items = take(5, sorted_distance_dictionary.items())
+top_five_items = sorted_distance_dictionary[:5]
 print(top_five_items)
 # closest_index = distance_for_tracks.index(min(distance_for_tracks))
 # closest_track_name = dataset_df.iloc[closest_index, 0]
