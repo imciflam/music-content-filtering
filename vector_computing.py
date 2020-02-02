@@ -23,15 +23,27 @@ mock_input = {'fname': ['x'],
 mock_input_df = pd.DataFrame(data=mock_input)
 dataset_df = pd.read_csv('conv_results.csv')
 
-distance_for_tracks = {}
-for index in dataset_df.index:
-    distance_for_tracks[dataset_df.iloc[index, 0]] = (distance.cosine(
-        mock_input_df.iloc[0, 1:9], dataset_df.iloc[index, 1:9]))
+
+def cosine_distance_calculation():
+    distance_for_tracks = {}
+    for index in dataset_df.index:
+        distance_for_tracks[dataset_df.iloc[index, 0]] = (distance.cosine(
+            mock_input_df.iloc[0, 1:9], dataset_df.iloc[index, 1:9]))
+    sorted_distance_dictionary = sorted(
+        distance_for_tracks.items(), key=lambda x: x[1])
+    top_five_items = sorted_distance_dictionary[:5]
+    print(top_five_items)
 
 
-sorted_distance_dictionary = sorted(
-    distance_for_tracks.items(), key=lambda x: x[1])
-top_five_items = sorted_distance_dictionary[:5]
-print(top_five_items)
-# closest_index = distance_for_tracks.index(min(distance_for_tracks))
-# closest_track_name = dataset_df.iloc[closest_index, 0]
+def jensen_shannon_distance_calculation():
+    distance_for_tracks_jensenshannon = {}
+    for index in dataset_df.index:
+        distance_for_tracks_jensenshannon[dataset_df.iloc[index, 0]] = (distance.cosine(
+            list(mock_input_df.iloc[0, 1:9].to_numpy()), list(dataset_df.iloc[index, 1:9].to_numpy())))
+    sorted_distance_dictionary_jensenshannon = sorted(
+        distance_for_tracks_jensenshannon.items(), key=lambda x: x[1])
+    top_five_items_jensenshannon = sorted_distance_dictionary_jensenshannon[:5]
+    print(top_five_items_jensenshannon)
+
+
+cosine_distance_calculation()
