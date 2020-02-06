@@ -7,4 +7,4 @@ install dependencies
 ```pip(3) install -r requirements.txt```
 
 then run
-```python index.py```  
+```python predict.py```  
