@@ -7,7 +7,7 @@ import temp_audio_removal as tar
 from tqdm import tqdm
 from scipy.spatial import distance
 import numpy as np
-import time
+from operator import itemgetter
 
 mock_input_df = pd.read_csv("conv_results.csv")
 dataset_df = pd.read_csv('spotify_preview_dataset.csv')
@@ -23,7 +23,7 @@ def cosine_distance_calculation():
         sorted_distance_dictionary = sorted(
             distance_for_tracks.items(), key=lambda x: x[1])
         top_five_items = sorted_distance_dictionary[:5]
-        output_data.append(top_five_items)
+        output_data.extend(top_five_items)
     return output_data
 
 
@@ -41,4 +41,6 @@ def jensen_shannon_distance_calculation():
     return output_data
 
 
-print(cosine_distance_calculation())
+data = cosine_distance_calculation()
+
+print(sorted(data, key=lambda x: x[1])[:5])  # return top 5 tracks
