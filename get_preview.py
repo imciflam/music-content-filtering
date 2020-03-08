@@ -6,8 +6,8 @@ import re
 
 def top_tracks_information(time_range='short_term'):
     top_url = 'https://api.spotify.com/v1/me/top/tracks?time_range=' + \
-        time_range + '&limit=3'
-    bearer = 'BQAUVl1WZAaFNJfMrgo29fnOwFZ2eahnEQ5YMXhsS8fjDck1z-sujLv61VU2oNp9wlhhM8eMUc7PokADcF7MO9FN8MAQqenT2K1APRl8QK86fSTPsRIFc2VKfvQ2y8SXmqw9fNn-AmTF_lIBLEmuWN__uCyT3HDBsqZDNEA'
+        time_range + '&limit=20'
+    bearer = 'BQBGMT4swLYY7Xq-yiaOsoo6XXj2loUEXAkDHHoxMvKOrmYP_RZOxaB89ANxPSN6I0okrPEVbWpWxyEVasVxHXp4mqNB55ejbPLHiTL7e31N24hQxKZGNc1xuY9sBNuHo6Br748cZs69QgcV1O_KO9f6TAJdsFUUIzsAHNQ'
     headers = {'Authorization': 'Bearer ' + bearer}
     response = requests.get(top_url, headers=headers)
     if response.status_code == 200:

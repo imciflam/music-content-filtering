@@ -84,6 +84,7 @@ def make_classification(stable_wav_filenames):
     print('Saved df to csv successfully.')
 
 
+# gp.top_tracks_information()
 model = load_model('models/conv.model')
 p_path = os.path.join('pickles', 'convbig.p')
 with open(p_path, 'rb') as handle:
