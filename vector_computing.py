@@ -41,6 +41,5 @@ def jensen_shannon_distance_calculation():
     return output_data
 
 
-data = cosine_distance_calculation()
-
-print(sorted(data, key=lambda x: x[1])[:5])  # return top 5 tracks
+# return top 5 tracks
+print(sorted(cosine_distance_calculation(), key=lambda x: x[1])[:5])
