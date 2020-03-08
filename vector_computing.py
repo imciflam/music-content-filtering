@@ -41,9 +41,17 @@ def jensen_shannon_distance_calculation():
     return output_data
 
 
-# return top 5 tracks
+# sort tracks
 top_five_to_export = (
-    sorted(cosine_distance_calculation(), key=lambda x: x[1])[:5])
-# remove 0.0s if there are any - means duplicates were found
-top_five_to_export = [x for x in top_five_to_export if x[1] != 0.0]
-print(top_five_to_export)
+    sorted(cosine_distance_calculation(), key=lambda x: x[1]))
+# remove 0.0s if there are any - means input equals to dataset
+top_tracks = [x for x in top_five_to_export if x[1] != 0.0]
+# also remove dupes in recommendations
+visited = set()
+final_output = []
+for name, val in top_tracks:
+    if not name in visited:
+        visited.add(name)
+        final_output.append((name, val))
+
+print(final_output[:5])
