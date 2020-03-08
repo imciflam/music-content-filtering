@@ -60,7 +60,6 @@ def get_mfcc(wav_filename):
 
     for f in df.index:
         if isinstance(f, str):
-            print(f)
             rate, signal = wavfile.read(standart_dir + "/converted_track/"+f)
             df.at[f, 'length'] = signal.shape[0]/rate
 
@@ -86,8 +85,6 @@ def get_mfcc(wav_filename):
     mfccs[wav_file] = mel
     # if more than one imported
     for f in tqdm(df.fname):
-        print(f)
-        print(df.fname)
         signal, rate = librosa.load(
             standart_dir + "/converted_track/" + f, sr=16000)  # screw highfreq
         mask = envelope(signal, rate, 0.0005)  # clean up the junk
