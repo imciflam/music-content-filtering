@@ -91,10 +91,8 @@ if request_code == 1:
     with open(p_path, 'rb') as handle:
         config = pickle.load(handle)
     stable_wav_filenames = tp.to_wav()
-    print(stable_wav_filenames)
     for stable_wav_filename in stable_wav_filenames:
         tp.get_mfcc(stable_wav_filename)
-    print('---')
     make_classification(stable_wav_filenames)
     tar.final_audio_cleaning()
     print('Cleaned up temporary audio files successfully')
