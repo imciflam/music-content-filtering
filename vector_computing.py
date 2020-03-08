@@ -42,4 +42,8 @@ def jensen_shannon_distance_calculation():
 
 
 # return top 5 tracks
-print(sorted(cosine_distance_calculation(), key=lambda x: x[1])[:5])
+top_five_to_export = (
+    sorted(cosine_distance_calculation(), key=lambda x: x[1])[:5])
+# remove 0.0s if there are any - means duplicates were found
+top_five_to_export = [x for x in top_five_to_export if x[1] != 0.0]
+print(top_five_to_export)
