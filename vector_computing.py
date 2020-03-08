@@ -15,7 +15,7 @@ dataset_df = pd.read_csv('conv_results_for_dataset.csv')
 
 def cosine_distance_calculation():
     distance_for_tracks = {}
-    output_data = [] 
+    output_data = []
     for input_index in mock_input_df.index:
         for index in dataset_df.index:
             distance_for_tracks[dataset_df.iloc[index, 0]] = (distance.cosine(
@@ -29,6 +29,7 @@ def cosine_distance_calculation():
 
 def jensen_shannon_distance_calculation():
     distance_for_tracks_jensenshannon = {}
+    output_data = []
     for input_index in mock_input_df.index:
         for index in dataset_df.index:
             distance_for_tracks_jensenshannon[dataset_df.iloc[index, 0]] = (distance.cosine(
@@ -36,7 +37,8 @@ def jensen_shannon_distance_calculation():
         sorted_distance_dictionary_jensenshannon = sorted(
             distance_for_tracks_jensenshannon.items(), key=lambda x: x[1])
         top_five_items_jensenshannon = sorted_distance_dictionary_jensenshannon[:5]
-        print(top_five_items_jensenshannon)
+        output_data.append(top_five_items_jensenshannon)
+    return output_data
 
 
 print(cosine_distance_calculation())
