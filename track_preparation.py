@@ -60,6 +60,7 @@ def get_mfcc(wav_filename):
 
     for f in df.index:
         if isinstance(f, str):
+            print(f)
             rate, signal = wavfile.read(standart_dir + "/converted_track/"+f)
             df.at[f, 'length'] = signal.shape[0]/rate
 
