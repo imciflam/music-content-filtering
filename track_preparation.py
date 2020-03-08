@@ -9,6 +9,8 @@ import librosa
 from scipy.io import wavfile
 from python_speech_features import mfcc, logfbank
 
+standart_dir = ""
+
 
 def envelope(y, rate, threshold):  # signal envelope
     mask = []
@@ -38,14 +40,15 @@ def to_wav():
     extension = ('*.mp3')
     os.chdir(audio_dir)
     wav_filename = None
-    wav_filename_list = []  
+    wav_filename_list = []
     for audio in glob.glob(extension):
         wav_filename = os.path.splitext(os.path.basename(audio))[0] + '.wav'
         AudioSegment.from_file(audio).export(
             standart_dir + "/converted_track/" + wav_filename, format='wav')
-        wav_filename_list.append(wav_filename) 
-    os.chdir(standart_dir)  
+        wav_filename_list.append(wav_filename)
+    os.chdir(standart_dir)
     return wav_filename_list
+
 
 def get_mfcc(wav_filename):
     dictionary = {'fname': [
@@ -82,6 +85,8 @@ def get_mfcc(wav_filename):
     mfccs[wav_file] = mel
     # if more than one imported
     for f in tqdm(df.fname):
+        print(f)
+        print(df.fname)
         signal, rate = librosa.load(
             standart_dir + "/converted_track/" + f, sr=16000)  # screw highfreq
         mask = envelope(signal, rate, 0.0005)  # clean up the junk
