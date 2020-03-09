@@ -12,6 +12,9 @@ from keras.models import load_model
 from sklearn.metrics import accuracy_score
 from tqdm import tqdm
 from python_speech_features import mfcc
+from flask import Flask, render_template, request, jsonify, make_response, redirect, url_for
+
+app = Flask(__name__)
 
 
 class Config:
@@ -84,21 +87,28 @@ def make_classification(stable_wav_filenames):
     print('Saved df to csv successfully.')
 
 
-# gp.top_tracks_information()
 # model preloading
 model = load_model('models/conv.model')
 p_path = os.path.join('pickles', 'convbig.p')
 with open(p_path, 'rb') as handle:
     config = pickle.load(handle)
-stable_wav_filenames = tp.to_wav()
-if stable_wav_filenames == []:
-    print("no mp3 files, shutting down")
-else:
 
-    for stable_wav_filename in stable_wav_filenames:
-        tp.get_mfcc(stable_wav_filename)
-    make_classification(stable_wav_filenames)
-    tar.final_audio_cleaning()
-    print('Cleaned up temporary audio files successfully')
-    print(vc.cosine_distance_calculation())
-    print('Predictions were made successfully')
+
+@app.route('/cnn', methods=['GET', 'POST'])
+def cnn():
+    # gp.top_tracks_information()
+    stable_wav_filenames = tp.to_wav()
+    if stable_wav_filenames == []:
+        print("no mp3 files, shutting down")
+    else:
+        for stable_wav_filename in stable_wav_filenames:
+            tp.get_mfcc(stable_wav_filename)
+        make_classification(stable_wav_filenames)
+        tar.final_audio_cleaning()
+        print('Cleaned up temporary audio files successfully')
+        print(vc.cosine_distance_calculation())
+        print('Predictions were made successfully')
+
+
+if __name__ == "__main__":
+    app.run(port=5001, debug=False)
