@@ -9,11 +9,10 @@ from scipy.spatial import distance
 import numpy as np
 from operator import itemgetter
 
-mock_input_df = pd.read_csv("conv_results.csv")
-dataset_df = pd.read_csv('spotify_preview_dataset.csv')
-
 
 def cosine_distance_calculation():
+    mock_input_df = pd.read_csv("conv_results.csv")
+    dataset_df = pd.read_csv('spotify_preview_dataset.csv')
     distance_for_tracks = {}
     output_data = []
     for input_index in mock_input_df.index:
@@ -24,10 +23,25 @@ def cosine_distance_calculation():
             distance_for_tracks.items(), key=lambda x: x[1])
         top_five_items = sorted_distance_dictionary[:5]
         output_data.extend(top_five_items)
-    return output_data
+
+    # sort tracks
+    top_five_to_export = (
+        sorted(output_data, key=lambda x: x[1]))
+    # remove 0.0s if there are any - means input equals to dataset
+    top_tracks = [x for x in top_five_to_export if x[1] != 0.0]
+    # also remove dupes in recommendations
+    visited = set()
+    final_output = []
+    for name, val in top_tracks:
+        if not name in visited:
+            visited.add(name)
+            final_output.append((name, val))
+    return final_output[:5]
 
 
 def jensen_shannon_distance_calculation():
+    mock_input_df = pd.read_csv("conv_results.csv")
+    dataset_df = pd.read_csv('spotify_preview_dataset.csv')
     distance_for_tracks_jensenshannon = {}
     output_data = []
     for input_index in mock_input_df.index:
@@ -41,17 +55,4 @@ def jensen_shannon_distance_calculation():
     return output_data
 
 
-# sort tracks
-top_five_to_export = (
-    sorted(cosine_distance_calculation(), key=lambda x: x[1]))
-# remove 0.0s if there are any - means input equals to dataset
-top_tracks = [x for x in top_five_to_export if x[1] != 0.0]
-# also remove dupes in recommendations
-visited = set()
-final_output = []
-for name, val in top_tracks:
-    if not name in visited:
-        visited.add(name)
-        final_output.append((name, val))
-
-print(final_output[:5])
+# print(cosine_distance_calculation())

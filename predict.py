@@ -7,6 +7,7 @@ import pickle
 import get_preview as gp
 import track_preparation as tp
 import temp_audio_removal as tar
+import vector_computing as vc
 from keras.models import load_model
 from sklearn.metrics import accuracy_score
 from tqdm import tqdm
@@ -57,7 +58,6 @@ def build_predictions(audio_dir):
 
 
 def make_classification(stable_wav_filenames):
-    print(stable_wav_filenames)
     # can remove if no classification, if we don't know true classes
     dictionary = {'fname':
                   stable_wav_filenames
@@ -85,13 +85,19 @@ def make_classification(stable_wav_filenames):
 
 
 # gp.top_tracks_information()
-model = load_model('models/conv.model')
-p_path = os.path.join('pickles', 'convbig.p')
-with open(p_path, 'rb') as handle:
-    config = pickle.load(handle)
+
 stable_wav_filenames = tp.to_wav()
-for stable_wav_filename in stable_wav_filenames:
-    tp.get_mfcc(stable_wav_filename)
-make_classification(stable_wav_filenames)
-tar.final_audio_cleaning()
-print('Cleaned up temporary audio files successfully')
+if stable_wav_filenames == []:
+    print("no mp3 files, shutting down")
+else:
+    model = load_model('models/conv.model')
+    p_path = os.path.join('pickles', 'convbig.p')
+    with open(p_path, 'rb') as handle:
+        config = pickle.load(handle)
+    for stable_wav_filename in stable_wav_filenames:
+        tp.get_mfcc(stable_wav_filename)
+    make_classification(stable_wav_filenames)
+    tar.final_audio_cleaning()
+    print('Cleaned up temporary audio files successfully')
+    print(vc.cosine_distance_calculation())
+    print('Predictions were made successfully')
