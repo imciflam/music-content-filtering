@@ -13,7 +13,7 @@ from sklearn.metrics import accuracy_score
 from tqdm import tqdm
 from python_speech_features import mfcc
 from flask import Flask, render_template, request, jsonify, make_response, redirect, url_for
-
+import json
 app = Flask(__name__)
 
 
@@ -94,13 +94,10 @@ with open(p_path, 'rb') as handle:
     config = pickle.load(handle)
 
 
-@app.route('/cnn', methods=['GET', 'POST'])
+@app.route('/cnn', methods=['POST'])
 def cnn():
-    input_data = [{'artist': 'Worakls', 'track': 'Detached Motion', 'preview_url': 'https://p.scdn.co/mp3-preview/79ff02c11e68ec5c1ba5a4f6bb444afb167dcca0?cid=032bb2c730e645968318b1811d084943'}, {'artist': 'TOOL', 'track': 'Lateralus', 'preview_url': 'https://p.scdn.co/mp3-preview/4ad4447026761e5c467d92f46ae2f98e0b283699?cid=032bb2c730e645968318b1811d084943'}, {'artist': 'Worakls', 'track': 'Salzburg',
-                                                                                                                                                                                                                                                                                                                                                                            'preview_url': 'https://p.scdn.co/mp3-preview/a8594e81712ca52e9f8ff308fe197fd47757cf06?cid=032bb2c730e645968318b1811d084943'}, {'artist': 'TOOL', 'track': 'Disposition', 'preview_url': 'https://p.scdn.co/mp3-preview/02b634cc83dc61d79bddcafef21d735e128800df?cid=032bb2c730e645968318b1811d084943'}, {'artist': 'Worakls', 'track': 'Nocturne', 'preview_url': 'https://p.scdn.co/mp3-preview/2136d9ae07c9f18ccdc9ac3a473c27c71568180b?cid=032bb2c730e645968318b1811d084943'}]
-    print("---")
+    input_data = json.loads(request.json)
     gp.top_tracks_information(input_data)
-    print("---")
     stable_wav_filenames = tp.to_wav()
     if stable_wav_filenames == []:
         print("no mp3 files, shutting down")
@@ -110,8 +107,9 @@ def cnn():
         make_classification(stable_wav_filenames)
         tar.final_audio_cleaning()
         print('Cleaned up temporary audio files successfully')
-        print(vc.cosine_distance_calculation())
+        pred_results = vc.cosine_distance_calculation()
         print('Predictions were made successfully')
+    return json.dumps(pred_results)
 
 
 if __name__ == "__main__":
