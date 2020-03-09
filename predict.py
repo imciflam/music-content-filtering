@@ -85,15 +85,15 @@ def make_classification(stable_wav_filenames):
 
 
 # gp.top_tracks_information()
-
+model = load_model('models/conv.model')
+p_path = os.path.join('pickles', 'convbig.p')
+with open(p_path, 'rb') as handle:
+    config = pickle.load(handle)
 stable_wav_filenames = tp.to_wav()
 if stable_wav_filenames == []:
     print("no mp3 files, shutting down")
 else:
-    model = load_model('models/conv.model')
-    p_path = os.path.join('pickles', 'convbig.p')
-    with open(p_path, 'rb') as handle:
-        config = pickle.load(handle)
+
     for stable_wav_filename in stable_wav_filenames:
         tp.get_mfcc(stable_wav_filename)
     make_classification(stable_wav_filenames)
