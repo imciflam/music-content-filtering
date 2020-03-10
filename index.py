@@ -101,6 +101,7 @@ def cnn():
     stable_wav_filenames = tp.to_wav()
     if stable_wav_filenames == []:
         print("no mp3 files, shutting down")
+        return json.dumps([])
     else:
         for stable_wav_filename in stable_wav_filenames:
             tp.get_mfcc(stable_wav_filename)
