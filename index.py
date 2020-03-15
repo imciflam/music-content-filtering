@@ -10,7 +10,6 @@ import temp_audio_removal as tar
 import vector_computing as vc
 from keras.models import load_model
 from sklearn.metrics import accuracy_score
-from tqdm import tqdm
 from python_speech_features import mfcc
 from flask import Flask, render_template, request, jsonify, make_response, redirect, url_for
 import json
@@ -35,7 +34,7 @@ def build_predictions(audio_dir):
     fn_prob = {}
 
     print('Extracting features from audio')
-    for fn in tqdm(os.listdir(audio_dir)):
+    for fn in os.listdir(audio_dir):
         rate, wav = wavfile.read(os.path.join(audio_dir, fn))
         y_prob = []
 

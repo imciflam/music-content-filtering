@@ -2,7 +2,6 @@ import os
 import glob
 from pydub import AudioSegment
 import os
-from tqdm import tqdm
 import pandas as pd
 import numpy as np
 import librosa
@@ -84,10 +83,9 @@ def get_mfcc(wav_filename):
     mel = mfcc(signal[:rate], rate, numcep=13, nfilt=26, nfft=1103).T
     mfccs[wav_file] = mel
     # if more than one imported
-    for f in tqdm(df.fname):
+    for f in (df.fname):
         signal, rate = librosa.load(
             standart_dir + "/converted_track/" + f, sr=16000)  # screw highfreq
         mask = envelope(signal, rate, 0.0005)  # clean up the junk
-        print('rewriting')
         wavfile.write(filename=standart_dir + "/converted_track/" +
                       f, rate=rate, data=signal[mask])
