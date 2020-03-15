@@ -27,10 +27,8 @@ def cosine_distance_calculation():
     # sort tracks
     top_five_to_export = (
         sorted(output_data, key=lambda x: x[1]))
-    print(top_five_to_export)
     # remove 0.0s if there are any - means input equals to dataset
     top_tracks = [x for x in top_five_to_export if x[1] != 0.0]
-    print(top_tracks)
     # also remove dupes in recommendations
     visited = set()
     final_output = []

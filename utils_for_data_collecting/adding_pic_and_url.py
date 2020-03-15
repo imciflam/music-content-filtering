@@ -21,24 +21,23 @@ def add_data():
         request_link = "https://api.spotify.com/v1/search?q=" + \
             element + "&type=track&limit=1"
         response = requests.get(request_link, headers=headers)
-        parsed = json.loads(response.text)  
-        if parsed['tracks']['total']!=0:
-            if parsed['tracks']['items'][0]['album']['images'][0]['url']!=None: 
-                pics.append(parsed['tracks']['items'][0]['album']['images'][0]['url'])
+        parsed = json.loads(response.text)
+        if parsed['tracks']['total'] != 0:
+            if parsed['tracks']['items'][0]['album']['images'][0]['url'] != None:
+                pics.append(parsed['tracks']['items'][0]
+                            ['album']['images'][0]['url'])
             else:
                 print("no images")
-                pics.append("https://sun7-8.userapi.com/mfdJIv5AQYX3tkWyzCtqMpW9LRMkBrkw69sDrg/V215K1wSxFE.jpg")
-            if parsed['tracks']['items'][0]['preview_url']!=None: 
+                pics.append(
+                    "https://sun7-8.userapi.com/mfdJIv5AQYX3tkWyzCtqMpW9LRMkBrkw69sDrg/V215K1wSxFE.jpg")
+            if parsed['tracks']['items'][0]['preview_url'] != None:
                 links.append(parsed['tracks']['items'][0]['preview_url'])
             else:
                 print("no url")
-                print(element)
                 links.append("")
         # pics.append("https://sun7-8.userapi.com/mfdJIv5AQYX3tkWyzCtqMpW9LRMkBrkw69sDrg/V215K1wSxFE.jpg")
         else:
             print(element)
-    print(len(links))
-    print(len(pics))
     dataset_df['preview_url'] = links
     dataset_df['picture'] = pics
 
