@@ -95,6 +95,7 @@ with open(p_path, 'rb') as handle:
 
 @app.route('/cnn', methods=['POST'])
 def cnn():
+    print("cnn got called")
     input_data = json.loads(request.json)
     gp.top_tracks_information(input_data)
     stable_wav_filenames = tp.to_wav()

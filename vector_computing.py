@@ -17,8 +17,8 @@ def cosine_distance_calculation():
     output_data = []
     for input_index in mock_input_df.index:
         for index in dataset_df.index:
-            distance_for_tracks[dataset_df.iloc[index, 0]] = (distance.cosine(
-                mock_input_df.iloc[input_index, 1:9], dataset_df.iloc[index, 1:9]))
+            distance_for_tracks[dataset_df.iloc[index, 0]] = distance.cosine(
+                mock_input_df.iloc[input_index, 1:9], dataset_df.iloc[index, 1:9]), dataset_df.iloc[index, 10], dataset_df.iloc[index, 11]
         sorted_distance_dictionary = sorted(
             distance_for_tracks.items(), key=lambda x: x[1])
         top_five_items = sorted_distance_dictionary[:5]
@@ -27,8 +27,10 @@ def cosine_distance_calculation():
     # sort tracks
     top_five_to_export = (
         sorted(output_data, key=lambda x: x[1]))
+    print(top_five_to_export)
     # remove 0.0s if there are any - means input equals to dataset
     top_tracks = [x for x in top_five_to_export if x[1] != 0.0]
+    print(top_tracks)
     # also remove dupes in recommendations
     visited = set()
     final_output = []
@@ -36,7 +38,20 @@ def cosine_distance_calculation():
         if not name in visited:
             visited.add(name)
             final_output.append((name, val))
-    return final_output[:5]
+
+    result = [(a, *rest) for a, rest in final_output[:5]]  # unpacking tuple
+    clean_result = []
+    for el in result:
+        element = list(el)
+        element[0] = element[0].replace('.wav', '')
+        x = element[0].split("_")
+        element.pop(0)
+        element.insert(0, x[0])
+        element.insert(1, x[1])
+        element.insert(4, element.pop(2))
+        clean_result.append(element)
+
+    return clean_result
 
 
 def jensen_shannon_distance_calculation():
@@ -53,6 +68,3 @@ def jensen_shannon_distance_calculation():
         top_five_items_jensenshannon = sorted_distance_dictionary_jensenshannon[:5]
         output_data.append(top_five_items_jensenshannon)
     return output_data
-
-
-# print(cosine_distance_calculation())
