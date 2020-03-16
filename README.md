@@ -6,5 +6,7 @@ Using CNN, RNN and CRNN to classify music by genre & to create recommendations.
 install dependencies 
 ```pip(3) install -r requirements.txt```
 
+install ffmpeg (also add link to it to path)
+
 then run
 ```python index.py```  
