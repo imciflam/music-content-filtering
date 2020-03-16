@@ -40,6 +40,8 @@ def to_wav():
     os.chdir(audio_dir)
     wav_filename = None
     wav_filename_list = []
+    if not os.path.exists('converted_track'):
+        os.makedirs('converted_track')
     for audio in glob.glob(extension):
         wav_filename = os.path.splitext(os.path.basename(audio))[0] + '.wav'
         AudioSegment.from_file(audio).export(
