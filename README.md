@@ -7,7 +7,7 @@ install dependencies
 
 ```pip(3) install -r requirements.txt```
 
-install ffmpeg (also add link to it to path)
+install ffmpeg (don't forget to add link to it to your PATH env variable)
 
 then run
 
