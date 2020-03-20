@@ -11,7 +11,7 @@ import vector_computing as vc
 from keras.models import load_model
 from sklearn.metrics import accuracy_score
 from python_speech_features import mfcc
-from flask import Flask, render_template, request, jsonify, make_response, redirect, url_for, abort
+from flask import Flask, render_template, request, jsonify, make_response, redirect, url_for
 import json
 app = Flask(__name__)
 
@@ -101,7 +101,7 @@ def cnn():
     stable_wav_filenames = tp.to_wav()
     if stable_wav_filenames == []:
         print("no mp3 files, shutting down")
-        abort(500)
+        return json.dumps([])
     else:
         for stable_wav_filename in stable_wav_filenames:
             tp.get_mfcc(stable_wav_filename)
