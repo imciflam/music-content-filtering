@@ -14,5 +14,7 @@ def top_tracks_information(items):
         if "preview_url" in item and item['preview_url'] != None:
             audio_url = item['preview_url']
             doc = requests.get(item['preview_url'])
-            with open("current_track/" + item['artist'] + "_" + re.sub("[:*<>|?]", " ", item['track'])+'.mp3', 'wb') as f:
+            with open("current_track/" + artist_name + "_" + re.sub("[:*<>|?\"]", " ", track_name)+'.mp3', 'wb') as f:
                 f.write(doc.content)
+        else:
+            print("no preview")
