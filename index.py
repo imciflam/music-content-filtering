@@ -89,7 +89,8 @@ def make_classification(stable_wav_filenames):
 # model preloading
 model = load_model('models/conv.model')
 model._make_predict_function() 
-p_path = os.path.join('pickles', 'convbig.p')
+# change to conv.p if need some speed
+p_path = os.path.join('pickles', 'conv.p')
 with open(p_path, 'rb') as handle:
     config = pickle.load(handle)
 
