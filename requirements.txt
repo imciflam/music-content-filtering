@@ -1,6 +1,6 @@
 numpy==1.22.0
 matplotlib==3.0.3
-scipy==1.2.1
+scipy==1.10.0
 pandas==0.25.3
 pydub==0.23.1
 requests==2.22.0
